@@ -1,5 +1,7 @@
 package Aula11
 
+import javax.print.attribute.standard.MediaSize
+
 fun main(){
     val saoPaulo = SaoPaulo()
 
@@ -51,4 +53,6 @@ class SaoPaulo(): RegraDeOuro{
     override fun colherEstadoZ() {
         TODO("Not yet implemented")
     }
+
+
 }
