@@ -14,7 +14,12 @@ class DigitalHouseManager {
 
     //remove um curso da lista de cursos
     fun excluirCurso(cdCurso: Int){
-        listaCursos.removeAt(cdCurso)
+        if(listaCursos.removeIf { it.cdCurso == cdCurso }) {
+            println("Curso removido!")
+        }
+        else{
+            println("Curso não encontrado!")
+        }
     }
 
     //registra um professor adjunto na lista de professores
@@ -37,7 +42,7 @@ class DigitalHouseManager {
 
     //remove um professor da lista de professores
     fun excluirProfessor(cdProfessor: Int){
-        listaProfessores.removeAt(cdProfessor)
+        listaProfessores.removeIf { it.cdProfessor == cdProfessor }
     }
 
     //registra um aluno na lista de alunos
@@ -45,6 +50,16 @@ class DigitalHouseManager {
         val aluno = Aluno(nome, sobrenome, cdAluno)
 
         listaAlunos.add(aluno)
+    }
+
+    //exlui um aluno da lista de alunos da DH
+    fun excluirAluno(cdAluno: Int){
+        listaAlunos.removeIf { it.cdAluno == cdAluno }
+    }
+
+    //exclui um aluno da lista de um curso
+    fun excluirAluno(cdAluno: Int, cdCurso: Int){
+        listaCursos.first { it.cdCurso == cdCurso }.excluirAluno(listaAlunos.first { it.cdAluno == cdAluno })
     }
 
     //registra uma matricula na lista de matriculas
@@ -65,10 +80,27 @@ class DigitalHouseManager {
         }
     }
 
+    //aloca um professor titular e um adjunto em um curso
     fun alocarProfessores(cdCurso: Int, cdProfessorTitular: Int, cdProfessorAdjunto: Int){
         listaCursos.first{it.cdCurso == cdCurso}.professorTitular = listaProfessores.first{it.cdProfessor == cdProfessorTitular}
 
         listaCursos.first{it.cdCurso == cdCurso}.professorAdjunto = listaProfessores.first{it.cdProfessor== cdProfessorAdjunto}
+    }
+
+    //busca em qual curso o aluno está matriculado
+    fun buscaCurso(cdAluno: Int){
+        listaMatriculas.forEach {
+            if(it.aluno.cdAluno == cdAluno){
+                println("${it.aluno.nome}, você está matriculado no curso ${it.curso.nome}")
+            }
+        }
+    }
+
+    //alunos matriculados no curso
+    fun mostraAlunosCurso(cdCurso: Int){
+        listaCursos.first { it.cdCurso == cdCurso }.listaAlunosMatriculados.forEach {
+            println(it.nome)
+        }
     }
 
 }
